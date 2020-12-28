@@ -1,11 +1,3 @@
-<template>
-  <div class="home">
-    <!--    <img alt="Vue logo" src="../assets/logo.png" />-->
-    <!--    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />-->
-
-    <List v-bind:tasks="tasks" />
-  </div>
-</template>
 <style lang="scss">
 * {
   box-sizing: border-box;
@@ -60,17 +52,60 @@ input {
   }
 }
 </style>
+
+<template>
+  <div class="home">
+    <!--    <img alt="Vue logo" src="../assets/logo.png" />-->
+    <!--    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />-->
+
+    <List
+      v-bind:tasks="tasks"
+      v-on:task-added="addTask"
+      v-on:task-checked="checkTask"
+    />
+  </div>
+</template>
+
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import HelloWorld from "@/components/HelloWorld.vue";
 import List from "@/components/List.vue";
 
 @Component({
+  created() {
+    const tasks: string | null = localStorage.getItem("tasks");
+
+    if (tasks) {
+      this.$data.tasks = JSON.parse(tasks);
+    }
+  },
   data() {
     return {
-      tasks: [
-      ]
+      tasks: []
     };
+  },
+  methods: {
+    addTask() {
+      const input: HTMLInputElement | null = document.querySelector(
+        "#new-task"
+      );
+
+      if (input?.value) {
+        this.$data.tasks.push({
+          id: this.$data.tasks.length,
+          title: input.value,
+          completed: false
+        });
+        input.value = "";
+
+        localStorage.setItem("tasks", JSON.stringify(this.$data.tasks));
+      }
+    },
+    checkTask(id: number) {
+      this.$data.tasks[id].completed = !this.$data.tasks[id].completed;
+
+      localStorage.setItem("tasks", JSON.stringify(this.$data.tasks));
+    }
   },
   components: {
     HelloWorld,

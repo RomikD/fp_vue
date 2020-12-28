@@ -1,5 +1,8 @@
 <template>
-  <li v-on:click="task.completed = !task.completed" v-bind:class="{ checked: task.completed }">
+  <li
+    v-on:click="$emit('task-checked', task.id)"
+    v-bind:class="{ checked: task.completed }"
+  >
     {{ task.title }}
   </li>
 </template>
@@ -11,6 +14,11 @@ export default {
       required: true
     }
   }
+  // methods: {
+  //   checkTask(task: { id: number; title: string; completed: boolean }) {
+  //     task.completed = !task.completed;
+  //   }
+  // }
 };
 </script>
 <style scoped lang="scss">

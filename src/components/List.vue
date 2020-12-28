@@ -1,40 +1,29 @@
 <template>
   <section>
     <ul>
-      <Item v-for="task of tasks" :key="task.id" v-bind:task="task" />
+      <Item
+        v-for="task of tasks"
+        :key="task.id"
+        v-bind:task="task"
+        v-on:task-checked="$emit('task-checked', task.id)"
+      />
       <li v-if="!tasks.length">No tasks</li>
     </ul>
     <label>
       <input id="new-task" type="text" placeholder="Add new task" />
-      <button v-on:click="add(tasks)">Add</button>
+      <button v-on:click="$emit('task-added')">Add</button>
     </label>
   </section>
 </template>
 
 <script lang="ts">
-import Item from "@/components/Item";
+import Item from "@/components/Item.vue";
 
 export default {
   props: {
     tasks: {
-      type: [],
+      type: Array,
       required: true
-    }
-  },
-  methods: {
-    add(tasks: { id: number; title: string; completed: boolean }[]) {
-      const input: HTMLInputElement | null = document.querySelector(
-        "#new-task"
-      );
-
-      if (input?.value) {
-        tasks.push({
-          id: tasks.length,
-          title: input.value,
-          completed: false
-        });
-        input.value = "";
-      }
     }
   },
   components: {
