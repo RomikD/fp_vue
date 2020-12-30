@@ -6,6 +6,7 @@
         :key="task.id"
         v-bind:task="task"
         v-on:task-checked="$emit('task-checked', task.id)"
+        v-on:remove-todo="$emit('remove-todo', task.id)"
       />
       <li v-if="!tasks.length">No tasks</li>
     </ul>

@@ -55,13 +55,11 @@ input {
 
 <template>
   <div class="home">
-    <!--    <img alt="Vue logo" src="../assets/logo.png" />-->
-    <!--    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />-->
-
     <List
       v-bind:tasks="tasks"
       v-on:task-added="addTask"
       v-on:task-checked="checkTask"
+      v-on:remove-todo="removeTodo"
     />
   </div>
 </template>
@@ -85,6 +83,11 @@ import List from "@/components/List.vue";
     };
   },
   methods: {
+    removeTodo(id) {
+      this.$data.tasks = this.$data.tasks.filter(
+        (t: { id: number; title: string; completed: boolean }) => t.id !== id
+      );
+    },
     addTask() {
       const input: HTMLInputElement | null = document.querySelector(
         "#new-task"

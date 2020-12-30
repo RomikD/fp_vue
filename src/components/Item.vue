@@ -4,6 +4,9 @@
     v-bind:class="{ checked: task.completed }"
   >
     {{ task.title }}
+    <button class="rm" v-on:click="$emit('remove-todo', task.id)">
+      &times;
+    </button>
   </li>
 </template>
 <script lang="ts">
